@@ -1,0 +1,10 @@
+go: downloading github.com/heroiclabs/nakama-common v1.32.0
+go: downloading github.com/google/uuid v1.6.0
+go: downloading google.golang.org/protobuf v1.34.1
+# github.com/aaatishphadte/tictactoe-nakama/modules
+modules/match_handler.go:47:3: unknown field MatchID in struct literal of type MatchState
+modules/match_handler.go:110:17: matchState.MatchID undefined (type *MatchState has no field or method MatchID)
+modules/match_handler.go:112:15: matchState.MatchID undefined (type *MatchState has no field or method MatchID)
+modules/match_handler.go:116:15: matchState.MatchID undefined (type *MatchState has no field or method MatchID)
+modules/match_handler.go:122:57: matchState.MatchID undefined (type *MatchState has no field or method MatchID)
+modules/match_handler.go:206:61: matchState.MatchID undefined (type *MatchState has no field or method MatchID)

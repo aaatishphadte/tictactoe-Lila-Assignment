@@ -1,0 +1,63 @@
+.matchmaking-screen {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.matchmaking-card {
+    background: var(--bg-card);
+    border-radius: 12px;
+    padding: 60px 40px;
+    box-shadow: var(--shadow);
+    width: 100%;
+    max-width: 500px;
+    border: 1px solid var(--border-color);
+    text-align: center;
+}
+
+.spinner-container {
+    margin-bottom: 32px;
+    display: flex;
+    justify-content: center;
+}
+
+.spinner {
+    width: 60px;
+    height: 60px;
+    border: 4px solid var(--border-color);
+    border-top-color: var(--accent-teal);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.matchmaking-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    min-height: 32px;
+}
+
+.matchmaking-subtitle {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 32px;
+}
+
+.cancel-button {
+    padding: 12px 32px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    background: transparent;
+    color: var(--text-secondary);
+    border: 2px solid var(--border-color);
+}
+
+.cancel-button:hover {
+    border-color: var(--accent-red);
+    color: var(--accent-red);
+}

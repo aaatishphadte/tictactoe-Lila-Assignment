@@ -1,0 +1,167 @@
+.winner-screen {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.winner-card {
+    background: var(--bg-card);
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: var(--shadow);
+    width: 100%;
+    max-width: 500px;
+    border: 1px solid var(--border-color);
+}
+
+/* Winner Announcement */
+.winner-announcement {
+    text-align: center;
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.winner-symbol {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    font-weight: 700;
+}
+
+.winner-announcement.win .winner-symbol {
+    background: var(--accent-teal);
+    color: var(--bg-primary);
+}
+
+.winner-announcement.lose .winner-symbol {
+    background: var(--accent-red);
+    color: white;
+}
+
+.draw-icon {
+    font-size: 64px;
+    margin-bottom: 16px;
+}
+
+.winner-title {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.winner-announcement.win .winner-title {
+    color: var(--accent-teal);
+}
+
+.winner-announcement.lose .winner-title {
+    color: var(--accent-red);
+}
+
+.winner-announcement.draw .winner-title {
+    color: var(--text-secondary);
+}
+
+.points {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+/* Leaderboard */
+.leaderboard-section {
+    margin-bottom: 24px;
+}
+
+.leaderboard-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.trophy-icon {
+    font-size: 24px;
+}
+
+.leaderboard-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.leaderboard-table th {
+    text-align: left;
+    padding: 12px 8px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-weight: 600;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.leaderboard-table td {
+    padding: 12px 8px;
+    font-size: 14px;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.leaderboard-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.rank-name {
+    display: flex;
+    gap: 12px;
+}
+
+.rank {
+    color: var(--text-secondary);
+    min-width: 24px;
+}
+
+.username {
+    font-weight: 500;
+}
+
+.stats {
+    color: var(--text-secondary);
+}
+
+.score {
+    text-align: right;
+    font-weight: 600;
+}
+
+.score-col {
+    text-align: right;
+}
+
+/* Play Again Button */
+.play-again-button {
+    width: 100%;
+    padding: 14px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    background: transparent;
+    color: var(--text-primary);
+    border: 2px solid var(--border-color);
+}
+
+.play-again-button:hover {
+    border-color: var(--accent-teal);
+    color: var(--accent-teal);
+}

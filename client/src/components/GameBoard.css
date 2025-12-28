@@ -1,0 +1,152 @@
+.game-board {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.game-card {
+    background: var(--bg-card);
+    border-radius: 12px;
+    padding: 32px;
+    box-shadow: var(--shadow);
+    width: 100%;
+    max-width: 500px;
+    border: 1px solid var(--border-color);
+}
+
+/* Players Info */
+.players-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.player {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+}
+
+.player.active {
+    opacity: 1;
+}
+
+.player-name {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.player-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* Turn Indicator */
+.turn-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.turn-symbol {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    transition: all 0.3s ease;
+}
+
+.turn-symbol.my-turn {
+    border-color: var(--accent-teal);
+    color: var(--accent-teal);
+    box-shadow: 0 0 12px rgba(61, 217, 208, 0.3);
+}
+
+.turn-text {
+    font-size: 16px;
+    color: var(--text-secondary);
+}
+
+/* Board */
+.board {
+    background: var(--accent-teal);
+    padding: 4px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 20px rgba(61, 217, 208, 0.2);
+}
+
+.board-row {
+    display: flex;
+    gap: 4px;
+}
+
+.board-row:not(:last-child) {
+    margin-bottom: 4px;
+}
+
+.cell {
+    width: 100%;
+    aspect-ratio: 1;
+    background: var(--bg-card);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    position: relative;
+}
+
+.cell:hover:not(:disabled) {
+    background: var(--bg-secondary);
+    transform: scale(0.95);
+}
+
+.cell:disabled {
+    cursor: not-allowed;
+}
+
+.cell.winning {
+    background: var(--accent-teal) !important;
+}
+
+.symbol {
+    animation: fadeIn 0.3s ease-out;
+}
+
+.symbol.x {
+    color: var(--accent-red);
+}
+
+.symbol.o {
+    color: var(--text-primary);
+}
+
+/* Status Message */
+.status-message {
+    text-align: center;
+    font-size: 14px;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
