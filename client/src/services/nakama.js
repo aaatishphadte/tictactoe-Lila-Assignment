@@ -1,9 +1,9 @@
 import { Client, Session } from '@heroiclabs/nakama-js';
 
-const SERVER_KEY = 'defaultkey';
-const HOST = window.location.hostname;
-const PORT = '8350';
-const USE_SSL = false;
+const SERVER_KEY = import.meta.env.VITE_NAKAMA_SERVER_KEY || 'defaultkey';
+const HOST = import.meta.env.VITE_NAKAMA_HOST || window.location.hostname;
+const PORT = import.meta.env.VITE_NAKAMA_PORT || '8350';
+const USE_SSL = import.meta.env.VITE_NAKAMA_USE_SSL === 'true';
 
 class NakamaService {
     constructor() {
