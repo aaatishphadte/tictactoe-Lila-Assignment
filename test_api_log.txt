@@ -1,0 +1,20 @@
+﻿
+≡ƒÄ« Tic-Tac-Toe Nakama Backend API Tests
+
+==================================================
+Testing Health Check...
+==================================================
+Status Code: 200
+Response: {}
+
+==================================================
+Testing Device Authentication...
+==================================================
+Status Code: 401
+Γ¥î Authentication Failed
+Response: {"error":"HTTP key invalid","message":"HTTP key invalid","code":16}
+
+ΓÜá∩╕Å  Skipping leaderboard test - no auth token
+==================================================
+Γ£à All tests completed!
+==================================================

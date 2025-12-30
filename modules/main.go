@@ -80,6 +80,12 @@ func InitModule(ctx context.Context, logger runtime.Logger, db *sql.DB, nk runti
 				entry.GetPresence().GetUsername())
 		}
 
+		// Prevent self-matching
+		if playerIDs[0] == playerIDs[1] {
+			logger.Info("Prevented self-match for UserID: %s", playerIDs[0])
+			return "", nil
+		}
+
 		params := map[string]interface{}{
 			"player1": playerIDs[0],
 			"player2": playerIDs[1],

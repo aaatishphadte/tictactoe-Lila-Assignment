@@ -8,31 +8,25 @@ export default function GameBoard({
     playerName,
     opponentName
 }) {
-    const [selectedCell, setSelectedCell] = useState(null);
 
     const handleCellClick = (row, col) => {
-        const index = row * 3 + col;
-
-        if (gameState.board[index] !== '' ||
-            gameState.currentPlayer !== playerSymbol ||
+        if (gameState.board[row][col] !== '' ||
+            gameState.current_player !== playerSymbol ||
             gameState.status !== 'active') {
             return;
         }
 
-        setSelectedCell({ row, col });
         onMove(row, col);
     };
 
-    const isMyTurn = gameState.currentPlayer === playerSymbol;
+    const isMyTurn = gameState.current_player === playerSymbol;
 
-    const renderCell = (index) => {
-        const row = Math.floor(index / 3);
-        const col = index % 3;
-        const value = gameState.board[index];
+    const renderCell = (row, col) => {
+        const value = gameState.board[row][col];
 
         return (
             <button
-                key={index}
+                key={`${row}-${col}`}
                 className={`cell ${value} ${value ? 'filled' : ''}`}
                 onClick={() => handleCellClick(row, col)}
                 disabled={!isMyTurn || value !== ''}
@@ -65,7 +59,7 @@ export default function GameBoard({
                 {/* Turn Indicator */}
                 <div className="turn-indicator">
                     <div className={`turn-symbol ${isMyTurn ? 'my-turn' : ''}`}>
-                        {gameState.currentPlayer}
+                        {gameState.current_player}
                     </div>
                     <span className="turn-text">Turn</span>
                 </div>
@@ -74,10 +68,7 @@ export default function GameBoard({
                 <div className="board">
                     {[0, 1, 2].map(row => (
                         <div key={row} className="board-row">
-                            {[0, 1, 2].map(col => {
-                                const index = row * 3 + col;
-                                return renderCell(index);
-                            })}
+                            {[0, 1, 2].map(col => renderCell(row, col))}
                         </div>
                     ))}
                 </div>

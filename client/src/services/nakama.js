@@ -1,7 +1,7 @@
-import { Client } from '@heroiclabs/nakama-js';
+import { Client, Session } from '@heroiclabs/nakama-js';
 
 const SERVER_KEY = 'defaultkey';
-const HOST = 'localhost';
+const HOST = window.location.hostname;
 const PORT = '8350';
 const USE_SSL = false;
 
@@ -17,26 +17,22 @@ class NakamaService {
     // Authentication
     async authenticateDevice(deviceId, username) {
         try {
-            // Use Nakama's custom authentication
-            // Parameters: (customId, create, username)
-            const session = await this.client.authenticateCustom(
-                deviceId,     // Custom ID (device identifier)
-                true,         // Create account if doesn't exist
-                username      // Username to display
-            );
-
-            // Store the session
+            // Use Nakama's built-in authentication
+            const session = await this.client.authenticateCustom(deviceId, true, username);
             this.session = session;
+
+            // Immediately fetch profile/rank information
+            const profile = await this.getPlayerRank(session.user_id);
 
             return {
                 user_id: session.user_id,
                 username: session.username,
                 session_token: session.token,
                 profile: {
-                    wins: 0,
-                    losses: 0,
-                    draws: 0,
-                    rating: 1000
+                    wins: profile.wins || 0,
+                    losses: profile.losses || 0,
+                    draws: profile.draws || 0,
+                    rating: profile.rating || 1000
                 }
             };
         } catch (error) {

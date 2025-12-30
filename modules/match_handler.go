@@ -191,6 +191,15 @@ func (m *TicTacToeMatch) MatchLeave(ctx context.Context, logger runtime.Logger, 
 
 			logger.Info("Game ended due to player disconnect - Winner: %s", userID)
 			m.broadcastGameState(dispatcher, matchState.GameState)
+
+			// Broadcast Game Over OpCode (5)
+			stateJSON, _ := json.Marshal(matchState.GameState)
+			envelope := &MatchMessage{
+				OpCode: OpCodeGameOver,
+				Data:   stateJSON,
+			}
+			envelopeJSON, _ := json.Marshal(envelope)
+			dispatcher.BroadcastMessage(OpCodeGameOver, envelopeJSON, nil, nil, true)
 			break
 		}
 	}
@@ -261,9 +270,18 @@ func (m *TicTacToeMatch) handleMove(ctx context.Context, logger runtime.Logger, 
 	// Broadcast updated game state
 	m.broadcastGameState(dispatcher, matchState.GameState)
 
-	// If game is finished, update stats
+	// If game is finished, update stats and broadcast Game Over
 	if matchState.GameState.Status == GameStatusFinished {
 		logger.Info("Game finished - Result: %s, Winner: %s", matchState.GameState.Result, matchState.GameState.Winner)
+
+		// Broadcast Game Over OpCode (5)
+		stateJSON, _ := json.Marshal(matchState.GameState)
+		envelope := &MatchMessage{
+			OpCode: OpCodeGameOver,
+			Data:   stateJSON,
+		}
+		envelopeJSON, _ := json.Marshal(envelope)
+		dispatcher.BroadcastMessage(OpCodeGameOver, envelopeJSON, nil, nil, true)
 
 		// Update player stats (async)
 		go func() {
