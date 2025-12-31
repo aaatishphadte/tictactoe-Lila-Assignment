@@ -3,15 +3,15 @@
 
 <table>
   <tr>
-    <th width="100%">Player 1 Perspective</th>
-    <th width="100%">Player 2 Perspective</th>
+    <th width="50%">Player 1 Perspective</th>
+    <th width="50%">Player 2 Perspective</th>
   </tr>
   <tr>
     <td>
-      <video src="https://github.com/aaatishphadte/tictactoe-Lila-Assignment/Recodings/Player-1.mp4" controls="controls" muted="muted" style="max-width: 100%;"></video>
+      <video src="./Recodings/Player-1.mp4" controls muted width="100%"></video>
     </td>
     <td>
-      <video src="https://github.com/aaatishphadte/tictactoe-Lila-Assignment/Recodings/player-2mobile.mp4" controls="controls" muted="muted" style="max-width: 100%;"></video>
+      <video src="./Recodings/player-2mobile.mp4" controls muted width="100%"></video>
     </td>
   </tr>
 </table>
