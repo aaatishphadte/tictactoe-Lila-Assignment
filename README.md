@@ -8,7 +8,7 @@
   </tr>
   <tr>
     <td>
-      <video src="https://github.com/aaatishphadte/tictactoe-Lila-Assignment/Recodings/Player-1.mp4" controls muted width="100%"></video>
+      <video src="./Recordings/Player-1.mp4" controls muted width="100%"></video>
     </td>
     <td>
       <video src="./Recordings/player-2mobile.mp4" controls muted width="100%"></video>
