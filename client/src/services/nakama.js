@@ -168,15 +168,44 @@ class NakamaService {
         }
 
         try {
+            console.log('[LEADERBOARD] 📊 Fetching leaderboard from Nakama...');
             const response = await this.client.rpc(
                 this.session,
                 'get_leaderboard',
                 {}
             );
 
-            return response.entries || [];
+            console.log('[LEADERBOARD] Raw response:', response);
+            console.log('[LEADERBOARD] Response type:', typeof response);
+            console.log('[LEADERBOARD] Response keys:', Object.keys(response || {}));
+            console.log('[LEADERBOARD] response.payload:', response.payload);
+
+            // CRITICAL FIX: Nakama RPC wraps response in 'payload' field
+            const entries = response.payload?.entries || [];
+            console.log('[LEADERBOARD] Entries array length:', entries.length);
+            console.log('[LEADERBOARD] Entries:', entries);
+
+            // Transform backend format to frontend format
+            // Backend returns: { user_id, username, rank, score, num_score }
+            // Frontend expects: { user_id, username, wins, losses, draws, rating }
+            const transformedEntries = entries.map((entry, index) => {
+                console.log(`[LEADERBOARD] Entry ${index}:`, entry);
+                return {
+                    user_id: entry.user_id,
+                    username: entry.username,
+                    rank: entry.rank,
+                    rating: entry.score,  // Backend's 'score' is the ELO rating
+                    wins: 0,              // TODO: Fetch from player profile
+                    losses: 0,            // TODO: Fetch from player profile  
+                    draws: 0              // TODO: Fetch from player profile
+                };
+            });
+
+            console.log('[LEADERBOARD] ✅ Transformed entries:', transformedEntries);
+            return transformedEntries;
         } catch (error) {
-            console.error('Get leaderboard failed:', error);
+            console.error('[LEADERBOARD] ❌ Get leaderboard failed:', error);
+            console.error('[LEADERBOARD] Error details:', error.message, error.stack);
             throw error;
         }
     }

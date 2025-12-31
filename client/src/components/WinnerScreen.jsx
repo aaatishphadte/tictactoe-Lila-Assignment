@@ -43,24 +43,27 @@ export default function WinnerScreen({
                     <table className="leaderboard-table">
                         <thead>
                             <tr>
-                                <th></th>
-                                <th>W/L/D</th>
-                                <th className="score-col">Score</th>
+                                <th>RANK</th>
+                                <th>PLAYER</th>
+                                <th className="score-col">SCORE</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {leaderboard.map((entry, index) => (
-                                <tr key={entry.user_id}>
-                                    <td className="rank-name">
-                                        <span className="rank">{index + 1}.</span>
-                                        <span className="username">{entry.username}</span>
+                            {leaderboard.length === 0 ? (
+                                <tr>
+                                    <td colSpan="3" style={{ textAlign: 'center', padding: '20px', opacity: 0.5 }}>
+                                        No leaderboard data yet
                                     </td>
-                                    <td className="stats">
-                                        {entry.wins || 0}/{entry.losses || 0}/{entry.draws || 0}
-                                    </td>
-                                    <td className="score">{entry.score || entry.rating}</td>
                                 </tr>
-                            ))}
+                            ) : (
+                                leaderboard.slice(0, 10).map((entry, index) => (
+                                    <tr key={entry.user_id || index}>
+                                        <td className="rank">{entry.rank || (index + 1)}</td>
+                                        <td className="username">{entry.username || 'Unknown'}</td>
+                                        <td className="score">{entry.rating || entry.score || 1000}</td>
+                                    </tr>
+                                ))
+                            )}
                         </tbody>
                     </table>
                 </div>

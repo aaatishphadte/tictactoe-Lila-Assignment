@@ -44,7 +44,9 @@ type GameState struct {
 	Result        GameResult         `json:"result"`
 	Winner        string             `json:"winner"`
 	MoveCount     int                `json:"move_count"`
-	GameMode      string             `json:"game_mode"` // "casual" or "ranked"
+	GameMode      string             `json:"game_mode"`       // "casual" or "ranked"
+	RatingChangeX int                `json:"rating_change_x"` // ELO change for Player X
+	RatingChangeO int                `json:"rating_change_o"` // ELO change for Player O
 }
 
 // Move represents a player's move
@@ -66,6 +68,8 @@ func NewGameState(matchID, playerX, playerO, gameMode string) *GameState {
 		Winner:        "",
 		MoveCount:     0,
 		GameMode:      gameMode,
+		RatingChangeX: 0, // Initialize to 0
+		RatingChangeO: 0, // Initialize to 0
 	}
 }
 

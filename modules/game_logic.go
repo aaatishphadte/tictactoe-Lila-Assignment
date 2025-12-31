@@ -242,6 +242,10 @@ func UpdatePlayerStats(ctx context.Context, logger runtime.Logger, nk runtime.Na
 		return err
 	}
 
+	// Store old ratings to calculate change
+	oldRatingX := profileX.Rating
+	oldRatingO := profileO.Rating
+
 	// Determine outcome and update stats
 	switch gameState.Result {
 	case GameResultXWins:
@@ -261,6 +265,14 @@ func UpdatePlayerStats(ctx context.Context, logger runtime.Logger, nk runtime.Na
 		UpdateRatings(&profileX, &profileO, 0.5) // Draw
 	}
 
+	// Calculate rating changes
+	gameState.RatingChangeX = profileX.Rating - oldRatingX
+	gameState.RatingChangeO = profileO.Rating - oldRatingO
+
+	logger.Info("Rating changes - Player X: %d (%d -> %d), Player O: %d (%d -> %d)",
+		gameState.RatingChangeX, oldRatingX, profileX.Rating,
+		gameState.RatingChangeO, oldRatingO, profileO.Rating)
+
 	// Save updated profiles
 	if err := UpdateUserProfile(ctx, logger, nk, gameState.PlayerX, profileX); err != nil {
 		return err
@@ -269,14 +281,12 @@ func UpdatePlayerStats(ctx context.Context, logger runtime.Logger, nk runtime.Na
 		return err
 	}
 
-	// Update leaderboard if ranked game
-	if gameState.GameMode == "ranked" {
-		if err := SubmitLeaderboardScore(ctx, logger, nk, gameState.PlayerX, int64(profileX.Rating)); err != nil {
-			logger.Error("Failed to update leaderboard for player X: %v", err)
-		}
-		if err := SubmitLeaderboardScore(ctx, logger, nk, gameState.PlayerO, int64(profileO.Rating)); err != nil {
-			logger.Error("Failed to update leaderboard for player O: %v", err)
-		}
+	// Update leaderboard for all games
+	if err := SubmitLeaderboardScore(ctx, logger, nk, gameState.PlayerX, int64(profileX.Rating)); err != nil {
+		logger.Error("Failed to update leaderboard for player X: %v", err)
+	}
+	if err := SubmitLeaderboardScore(ctx, logger, nk, gameState.PlayerO, int64(profileO.Rating)); err != nil {
+		logger.Error("Failed to update leaderboard for player O: %v", err)
 	}
 
 	return nil

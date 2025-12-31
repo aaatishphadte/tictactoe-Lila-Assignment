@@ -129,20 +129,26 @@
 
 .rank {
     color: var(--text-secondary);
-    min-width: 24px;
+    min-width: 40px;
+    text-align: center;
+    font-weight: 600;
 }
 
 .username {
     font-weight: 500;
+    text-align: left;
 }
 
 .stats {
     color: var(--text-secondary);
+    text-align: center;
 }
 
 .score {
     text-align: right;
-    font-weight: 600;
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--accent-teal);
 }
 
 .score-col {

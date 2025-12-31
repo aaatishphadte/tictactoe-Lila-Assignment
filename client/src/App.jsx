@@ -87,6 +87,9 @@ function App() {
       const match = await nakamaService.joinMatch(id);
       setMatchId(id);
 
+      // Store match in a variable that the callback can access
+      const matchRef = match;
+
       // Initial state
       setGameState({
         board: [['', '', ''], ['', '', ''], ['', '', '']],
@@ -103,6 +106,7 @@ function App() {
 
           console.log('--- Match Data --- OpCode:', matchData.op_code);
 
+          // OpCode 2 = Game State, OpCode 5 = Game Over
           if (matchData.op_code === 2 || matchData.op_code === 5) {
             const state = typeof envelope.data === 'string'
               ? JSON.parse(envelope.data)
@@ -119,42 +123,77 @@ function App() {
               setPlayerSymbol('O');
             }
 
-            // Set opponent name
+            // Set opponent name - FIXED: Check if presences exists
             const oppId = state.player_x === currentUser.user_id ? state.player_o : state.player_x;
-            const opponent = match.presences.find(p => p.user_id === oppId);
-            if (opponent) setOpponentName(opponent.username);
+
+            if (matchRef && matchRef.presences && matchRef.presences.length > 0) {
+              const opponent = matchRef.presences.find(p => p.user_id === oppId);
+
+              if (opponent && opponent.username) {
+                console.log('Setting opponent name to:', opponent.username);
+                setOpponentName(opponent.username);
+              } else {
+                // Fallback: try to find ANY other player
+                const others = matchRef.presences.filter(p => p.user_id !== currentUser.user_id);
+                if (others.length > 0 && others[0].username) {
+                  console.log('Setting opponent name (fallback) to:', others[0].username);
+                  setOpponentName(others[0].username);
+                }
+              }
+            } else {
+              console.warn('Match presences not available yet');
+            }
 
             // Match end logic
             if (state.status === 'finished' || matchData.op_code === 5) {
+              console.log('🏁 GAME OVER detected! OpCode:', matchData.op_code, 'Status:', state.status);
+              console.log('Winner:', state.winner, 'Current User:', currentUser.user_id);
+              console.log('Rating changes:', state.rating_change_x, state.rating_change_o);
+
               let winner = 'draw';
               let score = 0;
 
+              // Determine which player we are (X or O) to get the correct rating change
+              const isPlayerX = state.player_x === currentUser.user_id;
+              const actualRatingChange = isPlayerX ? state.rating_change_x : state.rating_change_o;
+
               if (state.winner === currentUser.user_id) {
                 winner = 'you';
-                score = 200;
+                score = actualRatingChange || 0;  // Use real ELO change
               } else if (state.winner !== "") {
                 winner = 'opponent';
-                score = -100;
+                score = actualRatingChange || 0;  // Use real ELO change (will be negative)
+              } else {
+                // Draw
+                score = actualRatingChange || 0;  // Use real ELO change (typically small)
               }
 
+              console.log('Setting game result:', { winner, score });
               setGameResult({ winner, score });
 
-              setLeaderboard([
-                {
-                  user_id: currentUser.user_id,
-                  username: currentUser.username,
-                  wins: winner === 'you' ? 1 : 0,
-                  rating: 1000 + score
-                },
-                {
-                  user_id: oppId,
-                  username: opponent ? opponent.username : 'Opponent',
-                  wins: winner === 'opponent' ? 1 : 0,
-                  rating: 1000 - score / 2
-                }
-              ]);
+              // Fetch REAL leaderboard from backend
+              console.log('Fetching real leaderboard from Nakama...');
+              nakamaService.getLeaderboard()
+                .then(leaderboardData => {
+                  console.log('Received leaderboard data:', leaderboardData);
+                  if (leaderboardData && leaderboardData.length > 0) {
+                    setLeaderboard(leaderboardData);
+                  } else {
+                    // Fallback to minimal data if backend returns empty
+                    console.warn('Leaderboard is empty, showing empty state');
+                    setLeaderboard([]);
+                  }
+                })
+                .catch(error => {
+                  console.error('Failed to fetch leaderboard:', error);
+                  setLeaderboard([]);
+                });
 
-              setTimeout(() => setScreen('winner'), 800);
+              console.log('Transitioning to winner screen in 800ms...');
+              setTimeout(() => {
+                console.log('NOW transitioning to winner screen');
+                setScreen('winner');
+              }, 800);
             }
           }
         } catch (error) {

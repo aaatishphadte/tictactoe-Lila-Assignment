@@ -190,6 +190,13 @@ func (m *TicTacToeMatch) MatchLeave(ctx context.Context, logger runtime.Logger, 
 			}
 
 			logger.Info("Game ended due to player disconnect - Winner: %s", userID)
+
+			// Update player stats and calculate rating changes BEFORE broadcasting
+			if err := UpdatePlayerStats(ctx, logger, nk, matchState.GameState); err != nil {
+				logger.Error("Failed to update player stats after disconnect: %v", err)
+			}
+
+			// Now broadcast with rating changes included
 			m.broadcastGameState(dispatcher, matchState.GameState)
 
 			// Broadcast Game Over OpCode (5)
@@ -267,14 +274,22 @@ func (m *TicTacToeMatch) handleMove(ctx context.Context, logger runtime.Logger, 
 
 	logger.Info("Move applied - UserID: %s, Position: (%d,%d)", userID, move.Row, move.Col)
 
-	// Broadcast updated game state
-	m.broadcastGameState(dispatcher, matchState.GameState)
-
-	// If game is finished, update stats and broadcast Game Over
+	// If game is finished, update stats FIRST before broadcasting
 	if matchState.GameState.Status == GameStatusFinished {
 		logger.Info("Game finished - Result: %s, Winner: %s", matchState.GameState.Result, matchState.GameState.Winner)
 
-		// Broadcast Game Over OpCode (5)
+		// Update player stats and calculate rating changes BEFORE broadcasting
+		if err := UpdatePlayerStats(ctx, logger, nk, matchState.GameState); err != nil {
+			logger.Error("Failed to update player stats: %v", err)
+		}
+	}
+
+	// Broadcast updated game state (now includes rating changes if game finished)
+	m.broadcastGameState(dispatcher, matchState.GameState)
+
+	// If game is finished, also broadcast Game Over OpCode (5)
+	if matchState.GameState.Status == GameStatusFinished {
+		// Broadcast Game Over OpCode (5) with rating changes included
 		stateJSON, _ := json.Marshal(matchState.GameState)
 		envelope := &MatchMessage{
 			OpCode: OpCodeGameOver,
@@ -282,13 +297,6 @@ func (m *TicTacToeMatch) handleMove(ctx context.Context, logger runtime.Logger, 
 		}
 		envelopeJSON, _ := json.Marshal(envelope)
 		dispatcher.BroadcastMessage(OpCodeGameOver, envelopeJSON, nil, nil, true)
-
-		// Update player stats (async)
-		go func() {
-			if err := UpdatePlayerStats(ctx, logger, nk, matchState.GameState); err != nil {
-				logger.Error("Failed to update player stats: %v", err)
-			}
-		}()
 	}
 }
 
