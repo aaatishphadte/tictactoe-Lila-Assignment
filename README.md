@@ -8,10 +8,10 @@
   </tr>
   <tr>
     <td>
-      <video src="./Recodings/Player-1.mp4" controls muted width="100%"></video>
+      <video src="./Recordings/Player-1.mp4" controls muted width="100%"></video>
     </td>
     <td>
-      <video src="./Recodings/player-2mobile.mp4" controls muted width="100%"></video>
+      <video src="./Recordings/player-2mobile.mp4" controls muted width="100%"></video>
     </td>
   </tr>
 </table>
