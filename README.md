@@ -3,8 +3,8 @@
 
 <table>
   <tr>
-    <th width="50%">Player 1 Perspective</th>
-    <th width="50%">Player 2 Perspective</th>
+    <th width="100%">Player 1 Perspective</th>
+    <th width="100%">Player 2 Perspective</th>
   </tr>
   <tr>
     <td>
