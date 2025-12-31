@@ -8,10 +8,10 @@
   </tr>
   <tr>
     <td>
-      <video src="./Recordings/Player-1.mp4" controls muted width="100%"></video>
+      <video src="https://github.com/user-attachments/assets/dc1c880a-a2da-43dc-9c22-5c6b6a7da9c4" controls muted width="100%"></video>
     </td>
     <td>
-      <video src="./Recordings/player-2mobile.mp4" controls muted width="100%"></video>
+      <video src="https://github.com/user-attachments/assets/9a981623-61a9-4a6f-beb9-422d861faaa0" controls muted width="100%"></video>
     </td>
   </tr>
 </table>
